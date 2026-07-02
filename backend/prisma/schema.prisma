@@ -58,6 +58,8 @@ model File {
   modifiedTime DateTime
   title String?
   description String?
+  remarks String?
+  visibility Visibility @default(PUBLIC)
   productId String
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   categoryId String?
@@ -65,6 +67,7 @@ model File {
   fileTags FileTag[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 }
 
 model SyncHistory{
@@ -100,4 +103,9 @@ model FileTag {
   tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([fileId, tagId])
+}
+
+enum Visibility{
+  PUBLIC
+  PRIVATE
 }

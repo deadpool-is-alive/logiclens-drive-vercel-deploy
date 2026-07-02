@@ -51,4 +51,12 @@ export class DriveService implements OnModuleInit {
 
         return files;
     }
+
+    async getFileStream(driveFileId: string){
+        const response = await this.drive.files.get(
+            { fileId: driveFileId, alt: 'media'},
+            { responseType: 'stream' },
+        );
+        return response.data;
+    }
 }
