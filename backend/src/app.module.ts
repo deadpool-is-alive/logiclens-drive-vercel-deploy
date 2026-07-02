@@ -5,11 +5,12 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ProductsModule } from './products/products.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { DriveModule } from './drive/drive.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true}),
-    PrismaModule, ProductsModule, AuthModule],
+    PrismaModule, ProductsModule, AuthModule, DriveModule],
   controllers: [AppController],
   providers: [AppService],
 })

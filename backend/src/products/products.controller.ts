@@ -6,7 +6,9 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('products')
 export class ProductsController {
-    constructor(private readonly productsService: ProductsService) {}
+    constructor(
+        private readonly productsService: ProductsService,
+    ) {}
 
     @UseGuards(JwtAuthGuard)
     @Post()
@@ -22,6 +24,11 @@ export class ProductsController {
     @Get(':id')
     findOne(@Param('id') id: string){
         return this.productsService.findOne(id);
+    }
+
+    @Get(':id/files')
+    async findFiles(@Param('id') id: string){
+        return this.productsService.findFiles(id);
     }
     
     @UseGuards(JwtAuthGuard)
