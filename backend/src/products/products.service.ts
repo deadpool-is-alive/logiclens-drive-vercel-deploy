@@ -118,4 +118,35 @@ export class ProductsService {
             throw error;
         }
     }
+
+     async getProductThumbnail(productId: string) {
+        // 1. Look for specific standard names
+        const coverFile = await this.prisma.file.findFirst({
+            where: {
+                productId: productId,
+                deletedAt: null,
+                name: {
+                    in: ['cover.jpg', 'cover.png', 'thumbnail.jpg', 'thumbnail.png', 'folder.jpg']
+                }
+            },
+            select: { id: true, driveFileId: true } // <--- ADDED driveFileId
+        });
+
+        // console.log("Found cover image");
+
+        if (coverFile) return coverFile;
+
+        // 2. Fallback: Find the first image in the folder
+        const firstImage = await this.prisma.file.findFirst({
+            where: {
+                productId: productId,
+                deletedAt: null,
+                mimeType: { startsWith: 'image/' }
+            },
+            select: { id: true, driveFileId: true }, // <--- ADDED driveFileId
+            orderBy: { createdAt: 'asc' }
+        });
+
+        return firstImage; // Returns { id: "uuid" } or null
+    }
 }

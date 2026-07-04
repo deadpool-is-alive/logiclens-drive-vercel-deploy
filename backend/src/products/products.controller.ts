@@ -26,6 +26,11 @@ export class ProductsController {
         return this.productsService.findOne(id);
     }
 
+    @Get(':id/thumbnail')
+    async getThumbnail(@Param('id') id: string) {
+        return this.productsService.getProductThumbnail(id);
+    }
+
     @Get(':id/files')
     async findFiles(@Param('id') id: string){
         return this.productsService.findFiles(id);
