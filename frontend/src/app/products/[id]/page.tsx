@@ -56,14 +56,17 @@ export default function ProductDetailPage() {
 
   const syncMutation = useMutation({
     mutationFn: () => api.post(`/products/${params.id}/sync-hierarchy`), 
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['product-files', params.id] }) 
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['product-files', params.id] }) ;
+      queryClient.invalidateQueries({queryKey: ['sidebar-folders']});
+    }
   });
 
   useEffect(() => {
     syncMutation.mutate();
     // We don't need to clean it up because React Query handles the state.
     // If the user navigates away quickly, it just cancels the background request.
-  }, [currentFolderId, params.id]); 
+  }, [params.id]); 
 
 
 

@@ -9,6 +9,8 @@ import { Express } from 'express';
 
 @Injectable()
 export class ProductsService {
+
+    private syncLocks = new Map<string, Promise<{ status: string; filesFound: number; filesCreated: number; filesUpdated: number }>>();
     constructor(
         private prisma: PrismaService,
         private driveService: DriveService
@@ -181,6 +183,20 @@ export class ProductsService {
      * Maps Google Drive parent-child relationships into the database.
      */
     async syncHierarchy(productId: string) {
+        const inFlight = this.syncLocks.get(productId);
+        if (inFlight) {
+            return inFlight;
+        }
+
+        const runPromise = this.runSyncHierarchy(productId).finally(() => {
+            this.syncLocks.delete(productId);
+        });
+
+        this.syncLocks.set(productId, runPromise);
+        return runPromise;
+    }
+
+    async runSyncHierarchy(productId: string) {
         const product = await this.findOne(productId);
 
         // We must fetch FLAT, including nested folders, along with their 'parents'

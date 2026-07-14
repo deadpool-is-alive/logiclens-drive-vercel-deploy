@@ -9,6 +9,7 @@ import { useContainer } from 'class-validator';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express'; 
 import multer from 'multer';
+import { file } from 'googleapis/build/src/apis/file';
 
 @Controller('files')
 export class FilesController {
@@ -33,6 +34,13 @@ export class FilesController {
         res.setHeader('Content-Type', mimeType);
         res.setHeader('Content-Disposition', 'inline');
         stream.pipe(res);
+        return this.filesService.getFileMeta(id);
+    }
+
+    @Get(':id/thumbnail')
+    async thumbnail(@Param('id') id: string){
+        const file = await this.filesService.getFileMeta(id);
+        return {id: id, driveFileId: file.driveFileId};
     }
 
     //@UseGuards(OptionalJwtAuthGuard)

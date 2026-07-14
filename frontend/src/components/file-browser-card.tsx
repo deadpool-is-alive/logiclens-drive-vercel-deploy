@@ -32,6 +32,7 @@ export function FileBrowserCard({ file, productId, loggedIn, onEdit, onDelete, o
   const googleCdnUrl = thumbnail?.driveFileId ? `https://drive.google.com/thumbnail?id=${thumbnail.driveFileId}&sz=w400` : null;
   const backendProxyUrl = thumbnail?.id ? `${process.env.NEXT_PUBLIC_API_URL}/files/${file.id}/preview` : null;
 
+
   let activeSrc: string | null = null;
   if (imageState === 'google' && googleCdnUrl) activeSrc = googleCdnUrl;
   if (imageState === 'fallback' && backendProxyUrl) activeSrc = backendProxyUrl;
