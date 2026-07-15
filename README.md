@@ -8,17 +8,13 @@ An internal Digital Asset Management system that turns Google Drive into a searc
 
 ## Screenshot
  
-![LogicLens Drive product grid](./docs/screenshots/product-grid.png) 
+![LogicLens Drive login](./docs/screenshots/login.png)  
+![LogicLens Drive product grid](./docs/screenshots/demo.png) 
 
 ---
 
 ## Features
 
-### For guests (no login required)
-- Browse all public products and their synced files
-- Search files by name, title, category, or tag
-- Preview files inline (images, PDFs, video) and download originals
-- Open any file directly in Google Drive
 
 ### For authenticated users
 - Full product CRUD (create, edit, delete)
@@ -70,6 +66,34 @@ logiclens-drive/
 - Docker Desktop
 - A Google Cloud service account with Drive API access (see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#google-drive-integration) for setup)
 
+## Demo Environment
+
+### Frontend
+- Import the repo in vercel
+- Deploy in vercel as Nest.js app
+- Also configure the backend api named 'NEXT_PUBLIC_API_URL' with backend web service render url
+```
+NEXT_PUBLIC_API_URL=https://logiclens-drive-vercel-deploy.onrender.com
+```
+
+### Backend
+- Make a new webservice in Render
+- Import repo in render
+- Keep your setting in backend like this 
+![LogicLens Drive render settings](./docs/screenshots/render_settings.png)
+![LogicLens Drive product grid](./docs/screenshots/demo.png)  
+- Add all the env variables as like instructed below in local environment
+- Add 'DATABASE_URL' which we got the postgres service in render
+
+### Database - Postgres
+- Make a new database on render
+- Copy the External Database Url and paste it in backend 'DATABASE_URL'
+- Also to make a new account, just follow the below steps in powershell
+> $env:DATABASE_URL="<your_external_database_url>?sslmode=require"
+> pnpm exec prisma studio
+
+## Local or VPS Environment
+
 ### 1. Clone and configure environment variables
 
 Copy the example env files and fill in real values:
@@ -85,7 +109,7 @@ JWT_REFRESH_SECRET=<different long random string>
 GOOGLE_SERVICE_ACCOUNT_KEY_PATH=./google-service-account.json
 ```
 
-> [!IMPORTANT] \
+> [!IMPORTANT] Important
 > The database username, password and name is to be kept different from this in production
 
 Place your downloaded Google service account key at `backend/google-service-account.json` (already gitignored).
@@ -134,9 +158,8 @@ Register a user via `POST /auth/register` once, then manually set that user's `r
 
 ## Known limitations
 
-- Video preview does not support seeking/scrubbing (no HTTP Range request support yet)
-- Downloaded files without a Drive-reported extension may lack the correct file extension
-- Refresh tokens are stored in `localStorage` on the frontend (acceptable for MVP; a production hardening pass should move to httpOnly cookies)
-- Preview/download of **private** files via direct link does not currently attach an auth token (public files are unaffected)
+- Currently not any backend for registering a new account is there, but made on frontend
+- Refresh tokens are stored in `localStorage` on the frontend (currently for demo; a production hardening pass should move to httpOnly cookies)
+- Currently not able to upload as it is running on a service account which is provided zero storage from google, To upload currently it is required to have the google drive we added as a shared folder otherwise have to implement oAuth to upload.
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#known-limitations) for details and suggested fixes.

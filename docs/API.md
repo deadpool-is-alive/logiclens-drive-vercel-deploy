@@ -23,8 +23,11 @@ Authentication: send `Authorization: Bearer <accessToken>` on protected routes. 
 |---|---|---|---|
 | GET | `/products` | None | List all products |
 | GET | `/products/:id` | None | Get one product |
+| GET | `/products/:id/thumbnail` | None | Get thumbnail or product(Image) |
 | GET | `/products/:id/files` | None | List synced files for a product (excludes trashed) |
 | POST | `/products` | Required | Create a product — `{ name, description?, driveFolderId }` |
+| POST | `/products/:id/sync-hierarchy` | Required | Sync hierarchy of files |
+| POST | `/products/upload` | Required | Upload files to google drive| 
 | PATCH | `/products/:id` | Required | Update a product |
 | DELETE | `/products/:id` | Required | Hard-delete a product and its file records |
 | POST | `/products/:id/sync` | Required | Recursively sync files from the linked Drive folder |
@@ -38,6 +41,8 @@ Authentication: send `Authorization: Bearer <accessToken>` on protected routes. 
 | GET | `/files/search` | Optional* | Query params: `query`, `category`, `tag`, `productId` |
 | GET | `/files/:id/preview` | Optional* | Streams file content inline (`Content-Disposition: inline`) |
 | GET | `/files/:id/download` | Optional* | Streams file content as attachment |
+| GET | `/files/:id/thumbnail` | None | Get thumbnail of current file if it is image |
+| GET | `/files/:id/preview-url` | None | Go to google preview of file |
 | PATCH | `/files/:id` | Required | Update `title`, `description`, `remarks`, `visibility`, `categoryId`, `tagIds[]` |
 | DELETE | `/files/:id` | Required | Soft-delete (moves to Recycle Bin) |
 | POST | `/files/:id/restore` | Required | Restore from Recycle Bin |

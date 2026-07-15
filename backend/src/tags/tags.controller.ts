@@ -19,7 +19,7 @@ export class TagsController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post()
+    @Delete()
     remove(@Param('id') id: string){
         return this.tagsService.remove(id);
     }

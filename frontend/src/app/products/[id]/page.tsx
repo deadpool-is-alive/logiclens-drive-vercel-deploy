@@ -66,7 +66,7 @@ export default function ProductDetailPage() {
     syncMutation.mutate();
     // We don't need to clean it up because React Query handles the state.
     // If the user navigates away quickly, it just cancels the background request.
-  }, [params.id]); 
+  }, [ params.id]); 
 
 
 

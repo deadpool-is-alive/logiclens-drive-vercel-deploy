@@ -1,4 +1,4 @@
-# Architecture — LogicLens Drive (\DAM)
+# Architecture — LogicLens Drive (DAM)
 
 ## System overview
 
@@ -52,11 +52,8 @@ Full field-level definitions live in `backend/prisma/schema.prisma`.
 
 | Issue | Cause | Fix scope |
 |---|---|---|
-| Video preview can't seek/scrub | `/files/:id/preview` streams linearly; no HTTP `Range` header support | Parse `Range` requests, return `206 Partial Content` with the corresponding byte slice from Drive |
-| Downloaded files sometimes missing extension | Falls back to Drive's stored `name`, which can omit an extension for some file types | Derive/append extension from `mimeType` when absent |
-| Private file preview/download via direct link fails for logged-in users | `window.open()` navigation doesn't carry the frontend's `Authorization` header | Fetch as a blob with the auth header, then trigger download/preview from the blob, or issue short-lived signed preview URLs |
-| Refresh tokens stored in `localStorage` | MVP-simplicity tradeoff | Move to httpOnly cookies for production hardening |
-| Category deletion fails silently in the UI if still referenced | Postgres `Restrict` constraint has no frontend error surface yet | Add a toast/inline error reading the backend's rejection message |
+| Refresh tokens stored in `localStorage` | Demo-simplicity tradeoff | Move to httpOnly cookies for production hardening |
+
 
 ---
 
